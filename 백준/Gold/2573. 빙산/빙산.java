@@ -5,11 +5,11 @@ import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        BOJ2573.prob2573();
+        BOJ2573_2.prob2573();
     }
 }
 
-class BOJ2573 {
+class BOJ2573_2 {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     static StringBuilder sb = new StringBuilder();
@@ -22,6 +22,7 @@ class BOJ2573 {
     static int N;
     static int M;
     static int year = 0;
+    static int iceCount = 0;
     public static void prob2573() throws IOException {
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
@@ -52,6 +53,7 @@ class BOJ2573 {
     }
     private static int melt(){
         year++;
+        iceCount = 0;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
                 map[i][j] = meltMap[i][j];
@@ -62,7 +64,7 @@ class BOJ2573 {
                 if (map[i][j] == 0) {
                     continue;
                 }
-
+                //얼음 개수를 샌다.
                 for (int k = 0; k < 4; k++) {
                     int row = i + dy[k];
                     int col = j + dx[k];
@@ -76,29 +78,32 @@ class BOJ2573 {
                     }
                     meltMap[i][j]--;
                 }
+                iceCount = meltMap[i][j] > 0 ? iceCount+1 : iceCount;
             }
         }
-        int cnt = 0;
+        if (iceCount == 0) {
+            return 0;
+        }
         isVisited = new boolean[N][M];
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
                 if (meltMap[i][j] == 0 || isVisited[i][j]) {
                     continue;
                 }
+                //1회 탐색 시 얼음 개수가 0이 아니라면 분할된 것이다.
                 bfs(i, j);
-                cnt++;
+                if (iceCount != 0) {
+                    return year;
+                }
             }
         }
-        if (cnt == 1) {
-            return -1;
-        } else {
-            return cnt == 0 ? 0 : year;
-        }
+        return -1;
     }
     private static void bfs(int row, int col){
         Queue<int[]> queue = new LinkedList<>();
         queue.add(new int[]{row, col});
         isVisited[row][col] = true;
+        iceCount--;
 
         while (!queue.isEmpty()) {
             int[] point = queue.poll();
@@ -113,6 +118,7 @@ class BOJ2573 {
                     continue;
                 }
                 isVisited[y][x] = true;
+                iceCount--; //방문한 얼음 개수를 뺀다.
                 queue.add(new int[]{y, x});
             }
         }
