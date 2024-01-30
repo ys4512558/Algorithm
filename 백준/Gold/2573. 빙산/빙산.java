@@ -1,15 +1,13 @@
 import java.io.*;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        BOJ2573_2.prob2573();
+        BOJ2573_3.prob2573();
     }
 }
 
-class BOJ2573_2 {
+class BOJ2573_3 {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     static StringBuilder sb = new StringBuilder();
@@ -91,7 +89,7 @@ class BOJ2573_2 {
                     continue;
                 }
                 //1회 탐색 시 얼음 개수가 0이 아니라면 분할된 것이다.
-                bfs(i, j);
+                dfs(i, j);
                 if (iceCount != 0) {
                     return year;
                 }
@@ -99,29 +97,17 @@ class BOJ2573_2 {
         }
         return -1;
     }
-    private static void bfs(int row, int col){
-        Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{row, col});
-        isVisited[row][col] = true;
+
+    private static void dfs(int row, int col) {
+        if (row < 0 || row >= N || col < 0 || col >= M || isVisited[row][col] || meltMap[row][col] == 0) {
+            return;
+        }
         iceCount--;
-
-        while (!queue.isEmpty()) {
-            int[] point = queue.poll();
-            int curY = point[0];
-            int curX = point[1];
-
-            for (int i = 0; i < 4; i++) {
-                int y = curY + dy[i];
-                int x = curX + dx[i];
-
-                if (y < 0 || y >= N || x < 0 || x >= M || isVisited[y][x] || meltMap[y][x] == 0) {
-                    continue;
-                }
-                isVisited[y][x] = true;
-                iceCount--; //방문한 얼음 개수를 뺀다.
-                queue.add(new int[]{y, x});
-            }
+        isVisited[row][col] = true;
+        for (int i = 0; i < 4; i++) {
+            int y = row + dy[i];
+            int x = col + dx[i];
+            dfs(y, x);
         }
     }
-
 }
