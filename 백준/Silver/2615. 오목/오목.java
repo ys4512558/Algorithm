@@ -9,9 +9,6 @@ public class Main {
     static int[][] map;
     static int[] dy = {-1, 0, 1, 1};
     static int[] dx = {1, 1, 1, 0};
-
-    static int[] reverseDy = {1, 0, -1, -1};
-    static int[] reverseDx = {-1, -1, -1, 0};
     static boolean[][] isVisited;
 
     public static void main(String[] args) throws IOException {
@@ -53,7 +50,7 @@ public class Main {
         }
         isVisited[row][col] = true;
         int res = dfs(row + dy[direction], col + dx[direction], direction, color)
-                + dfs(row + reverseDy[direction], col + reverseDx[direction], direction, color);
+                + dfs(row - dy[direction], col - dx[direction], direction, color);
         return res + 1;
     }
 }
