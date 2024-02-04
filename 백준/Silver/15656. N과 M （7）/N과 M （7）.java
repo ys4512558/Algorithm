@@ -23,13 +23,13 @@ public class Main {
         Arrays.sort(arr);
 
         numbers = new int[M];
-        solve(N, M, 0, 0);
+        solve(N, M, 0);
         bw.write(sb.toString());
         bw.flush();
         bw.close();
     }
 
-    private static void solve(int n, int m, int depth, int start) {
+    private static void solve(int n, int m, int depth) {
         if (m == depth) {
             for (int i = 0; i < m; i++) {
                 sb.append(numbers[i]).append(" ");
@@ -39,7 +39,7 @@ public class Main {
         }
         for (int i = 0; i < n; i++) {
             numbers[depth] = arr[i];
-            solve(n, m, depth + 1, i + 1);
+            solve(n, m, depth + 1);
         }
     }
 }
