@@ -20,7 +20,7 @@ public class Main {
             } else if (command.equals("size")) {
                 sb.append(queue.size()).append("\n");
             } else if (command.equals("empty")) {
-                sb.append(queue.empty() ? 1 : 0).append("\n");;
+                sb.append(queue.empty() ? 1 : 0).append("\n");
             } else if (command.equals("front")) {
                 sb.append(queue.front()).append("\n");
             } else if (command.equals("back")) {
