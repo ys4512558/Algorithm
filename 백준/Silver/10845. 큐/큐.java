@@ -16,15 +16,15 @@ public class Main {
                 int num = Integer.parseInt(st.nextToken());
                 queue.push(num);
             } else if (command.equals("pop")) {
-                sb.append(queue.pop()).append("\n");;
+                sb.append(queue.pop()).append("\n");
             } else if (command.equals("size")) {
-                sb.append(queue.size()).append("\n");;
+                sb.append(queue.size()).append("\n");
             } else if (command.equals("empty")) {
                 sb.append(queue.empty() ? 1 : 0).append("\n");;
             } else if (command.equals("front")) {
-                sb.append(queue.front()).append("\n");;
+                sb.append(queue.front()).append("\n");
             } else if (command.equals("back")) {
-                sb.append(queue.back()).append("\n");;
+                sb.append(queue.back()).append("\n");
             }
 
         }
