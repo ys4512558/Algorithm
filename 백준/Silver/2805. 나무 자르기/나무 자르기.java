@@ -29,13 +29,11 @@ public class Main {
                 if (height[i] <= mid) break;
                 len += height[i] - mid;
             }
-
-            if (len > M) {
+            if(len == M) break;
+            if(len > M) {
                 bottom = mid + 1;
-            } else if(len < M){
-                top = mid - 1;
             } else {
-                break;
+                top = mid - 1;
             }
             mid = (bottom + top) / 2;
         }
