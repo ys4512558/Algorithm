@@ -19,14 +19,14 @@ public class Main {
             height[i] = Integer.valueOf(st.nextToken());
         }
         //내림차순 정렬
-        Arrays.sort(height, Comparator.reverseOrder());
-        int top = 2000000000;
-        int bottom = 0; //제일 높은 나무 - M인 경우가 하한선
+        Arrays.sort(height);
+        int top = height[N - 1];
+        int bottom = 0;
         int mid = (top + bottom) / 2;
         while (top >= bottom){
             long len = 0;
-            for (int i = 0; i < N; i++) {
-                if(height[i] <= mid) break;
+            for (int i = N - 1; i >= 0; i--) {
+                if (height[i] <= mid) break;
                 len += height[i] - mid;
             }
 
