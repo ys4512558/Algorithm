@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.StringTokenizer;
 
 public class Main {
-    static Integer[] height;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -13,12 +12,11 @@ public class Main {
 
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
-        height = new Integer[N];
+        int[] height = new int[N];
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            height[i] = Integer.valueOf(st.nextToken());
+            height[i] = Integer.parseInt(st.nextToken());
         }
-        //내림차순 정렬
         Arrays.sort(height);
         int top = height[N - 1];
         int bottom = 0;
