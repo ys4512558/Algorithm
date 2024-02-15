@@ -46,10 +46,10 @@ public class Solution {
             card2[idx++] = i;
         }
         win = 0;
-        dfs(card1, card2, 0, 0,0);
+        dfs(0, 0, 0);
     }
 
-    private static void dfs(int[] card1, int[] card2, int depth, int score1, int bitMask) {
+    private static void dfs(int depth, int score1, int bitMask) {
         if (depth == N) {
             win = score1 >= 86 ? win + 1 : win;
             return;
@@ -60,7 +60,7 @@ public class Solution {
                 continue;
             }
             int s = card1[depth] > card2[i] ? card1[depth] + card2[i] : 0;
-            dfs(card1, card2, depth + 1, score1 + s, bitMask | 1 << i);
+            dfs(depth + 1, score1 + s, bitMask | 1 << i);
         }
     }
 }
