@@ -94,27 +94,29 @@ public class Main {
     }
 
     private static void rotate(int[][] arr, int r1, int c1, int r2, int c2) {
-        int[][] copy = copyArray(arr);
-
+        int temp1 = arr[r1][c2];
         for (int i = c2; i > c1; i--) {
-            arr[r1][i] = copy[r1][i - 1];
+            arr[r1][i] = arr[r1][i - 1];
         }
-        arr[r1][c1] = copy[r1 + 1][c1];
 
-        for (int i = r2; i > r1; i--) {
-            arr[i][c2] = copy[i - 1][c2];
+        int temp2 = arr[r2][c2];
+        for (int i = r2; i > r1 + 1; i--) {
+            arr[i][c2] = arr[i - 1][c2];
         }
-        arr[r1 + 1][c2] = copy[r1][c2];
 
-        for (int i = c1; i < c2; i++) {
-            arr[r2][i] = copy[r2][i + 1];
-        }
-        arr[r2][c2 - 1] = copy[r2][c2];
+        arr[r1 + 1][c2] = temp1;
+        temp1 = arr[r2][c1];
 
-        for (int i = r1; i < r2; i++) {
-            arr[i][c1] = copy[i + 1][c1];
+        for (int i = c1; i < c2 - 1; i++) {
+            arr[r2][i] = arr[r2][i + 1];
         }
-        arr[r1][c1 + 1] = copy[r1][c1];
+        arr[r2][c2 - 1] = temp2;
+
+
+        for (int i = r1; i < r2 - 1; i++) {
+            arr[i][c1] = arr[i + 1][c1];
+        }
+        arr[r2 - 1][c1] = temp1;
     }
 
     private static int[][] copyArray(int[][] arr) {
