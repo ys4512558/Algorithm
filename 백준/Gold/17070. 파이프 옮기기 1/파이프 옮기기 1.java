@@ -11,16 +11,7 @@ public class Main {
     static int N;
     static int[][] map;
     static int count = 0;
-    static class Pair{
-        int startX, startY, endX, endY;
-
-        public Pair(int startX, int startY, int endX, int endY) {
-            this.startX = startX;
-            this.startY = startY;
-            this.endX = endX;
-            this.endY = endY;
-        }
-    }
+    
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -35,7 +26,7 @@ public class Main {
         }
 
         if(map[0][2] != 1){
-            dfs(new Pair(0, 0, 0, 1));
+            dfs(0, 0, 0, 1);
         }
 
         bw.write(String.valueOf(count));
@@ -43,38 +34,33 @@ public class Main {
         bw.close();
     }
 
-    private static void dfs(Pair pair) {
-        if(pair.endX == N - 1 && pair.endY == N - 1){
+    private static void dfs(int sX, int sY, int eX, int eY) {
+        if(eX == N - 1 && eY == N - 1){
             count++;
             return;
         }
-        int startX = pair.startX;
-        int startY = pair.startY;
-        int endX = pair.endX;
-        int endY = pair.endY;
 
-        if ((startX == endX || (startX == endX - 1 && startY == endY - 1))
-                && (endX + dx[COL]) < N && (endY + dy[COL] < N)
-                && map[endX + dx[COL]][endY + dy[COL]] != 1) { //행이 같으면 열이동
+        if ((sX == eX || (sX == eX - 1 && sY == eY - 1))
+                && (eX + dx[COL]) < N && (eY + dy[COL] < N)
+                && map[eX + dx[COL]][eY + dy[COL]] != 1) { //행이 같으면 열이동
             //열이동
-            dfs(new Pair(endX, endY, endX + dx[COL], endY + dy[COL]));
+            dfs(eX, eY, eX + dx[COL], eY + dy[COL]);
 
         }
-        if((startY == endY || (startX == endX - 1 && startY == endY - 1))
-                && (endX + dx[ROW] < N && endY + dy[ROW] < N)
-                && map[endX + dx[ROW]][endY + dy[ROW]] != 1) { //열이 같으면 행이동
+        if((sY == eY || (sX == eX - 1 && sY == eY - 1))
+                && (eX + dx[ROW] < N && eY + dy[ROW] < N)
+                && map[eX + dx[ROW]][eY + dy[ROW]] != 1) { //열이 같으면 행이동
             //행이동
-            dfs(new Pair(endX, endY, endX + dx[ROW], endY + dy[ROW]));
+            dfs(eX, eY, eX + dx[ROW], eY + dy[ROW]);
         }
 
         //대각선은 어떻게 왔든 가능함
-        if ((endX + dx[DIAG] < N && endY + dy[DIAG] < N)
-                && map[endX + dx[DIAG]][endY + dy[DIAG]] != 1
-                && map[endX + dx[DIAG] - 1][endY + dy[DIAG]] != 1
-                && map[endX + dx[DIAG]][endY + dy[DIAG] - 1] != 1) {
+        if ((eX + dx[DIAG] < N && eY + dy[DIAG] < N)
+                && map[eX + dx[DIAG]][eY + dy[DIAG]] != 1
+                && map[eX + dx[DIAG] - 1][eY + dy[DIAG]] != 1
+                && map[eX + dx[DIAG]][eY + dy[DIAG] - 1] != 1) {
 
-            dfs(new Pair(endX, endY, endX + dx[DIAG], endY + dy[DIAG]));
+            dfs(eX, eY, eX + dx[DIAG], eY + dy[DIAG]);
         }
     }
 }
-
