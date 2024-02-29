@@ -110,16 +110,7 @@ public class Solution {
 		
 		for (int i = 0; i <= M; i++) {
 			go(person1, moveA[i], person2, moveB[i]);
-//			if(map[person1.x][person1.y] != 0 && map[person2.x][person2.y] != 0) {
-//				chargable(person1, person2);	
-//			} else if(map[person1.x][person1.y] != 0) {
-//				max += powerList.get(map[person1.x][person1.y]);
-//			} else if(map[person2.x][person2.y] != 0) {
-//				max += powerList.get(map[person2.x][person2.y]);
-//			}
-			chargable(person1, person2);	
-//			if(i == 10) System.out.println();
-//			System.out.println(i + "max : " + max);
+			chargable(person1, person2);
 		}
 		
 		return max;
@@ -238,31 +229,5 @@ public class Solution {
 				queue.offer(new int[] {x, y, point[2] + 1});
 			}
 		}
-		
-//		printMap();
-//		System.out.println("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-//		printCount();
-	}
-	
-	public static void printMap() {
-		System.out.println("=========================");
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				System.out.print(map[i][j] + " ");
-			}
-			System.out.println();
-		}
-		System.out.println("--------------------------");
-	}
-	
-	public static void printCount() {
-		System.out.println("=========================");
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				System.out.print(count[i][j] + " ");
-			}
-			System.out.println();
-		}
-		System.out.println("--------------------------");
 	}
 }
