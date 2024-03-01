@@ -27,11 +27,9 @@ public class Main {
 		for (int i = 1; i < times.length; i++) {
 			if(end > times[i][1]) { //이전에 선택한 회의가 지금 확인하는 회의보다 늦게 끝나는 경우
 				//이전 회의 대신 선택
-				start = times[i][0];
 				end = times[i][1]; 
 			} else if(end <= times[i][0]) { //현재 추가하려는 회의가 이전 회의 종료 시간보다 늦게 시작하면 추가
 				cnt++;
-				start = times[i][0];
 				end = times[i][1];
 			}
 		}
