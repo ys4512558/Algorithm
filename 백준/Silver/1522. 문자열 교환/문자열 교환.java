@@ -6,15 +6,17 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringBuilder sb = new StringBuilder();
 
-        String input = br.readLine();
-        int size = input.length();
-        int countA = (int) input.chars().filter((value -> value == 'a')).count();
+        char[] chars = br.readLine().toCharArray();
+        int countA = 0;
+        for (int i = 0; i < chars.length; i++) {
+            if(chars[i] == 'a') countA++;
+        }
 
         int min = Integer.MAX_VALUE;
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < chars.length; i++) {
             int countB = 0;
             for (int j = 0; j < countA; j++) {
-                if(input.charAt((i + j) % size) == 'b') countB++;
+                if(chars[(i + j) % chars.length] == 'b') countB++;
             }
             min = Math.min(min, countB);
         }
