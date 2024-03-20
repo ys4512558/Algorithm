@@ -80,6 +80,7 @@ public class Main {
                 }
             }
         }
+        //각각 원소가 하나의 집합을 이루면 더 이상 합쳐지지 않는 것을 의미함.
         if (mark[N-1][N-1] == N * N) return true;
         for (Integer key : markMap.keySet()) {
             List<int[]> list = markMap.get(key);
