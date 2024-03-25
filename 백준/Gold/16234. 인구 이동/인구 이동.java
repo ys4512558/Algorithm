@@ -1,100 +1,112 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
-    static int[][] map;
+    //https://www.acmicpc.net/problem/16234
+    //인구이동
     static int N, L, R;
-    static int count = 0;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+    static int[][][] parent;
+    static int[][] height, map;
+    static int[] dx = {-1, 0}, dy = {0, -1};
 
+    static void init() {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                Arrays.fill(parent[i][j], -1);
+            }
+        }
+        height = new int[N][N];
+    }
+
+    static int[] find(int i, int j) {
+        if (parent[i][j][0] == -1 && parent[i][j][1] == -1) return new int[]{i, j};
+        return parent[i][j] = find(parent[i][j][0], parent[i][j][1]);
+    }
+
+    static boolean union(int[] u, int[] v) {
+        u = find(u[0], u[1]);
+        v = find(v[0], v[1]);
+        if (u[0] == v[0] && u[1] == v[1]) return false;
+        if (height[u[0]][u[1]] >= height[v[0]][v[1]]) {
+            int[] tmpU = new int[]{u[0], u[1]};
+            u = new int[]{v[0], v[1]};
+            v = new int[]{tmpU[0], tmpU[1]};
+        }
+        parent[u[0]][u[1]] = new int[]{v[0], v[1]};
+        if (height[u[0]][u[1]] == height[v[0]][v[1]]) height[v[0]][v[1]]++;
+        height[u[0]][u[1]] = 0;
+        return true;
+    }
+
+    static boolean open() {
+        boolean ret = false;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                for (int k = 0; k < 2; k++) {
+                    int nextI = i + dx[k];
+                    int nextJ = j + dy[k];
+                    if (nextI < 0 || nextJ < 0 || nextI >= N || nextJ >= N) continue;
+                    int diff = Math.abs(map[i][j] - map[nextI][nextJ]);
+                    if (diff >= L && diff <= R) {
+                        if (union(new int[]{i, j}, new int[]{nextI, nextJ})) {
+                            ret = true;
+                        }
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+
+    static void migration() {
+        int[][] people = new int[N][N];
+        int[][] count = new int[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                int[] root = find(i, j);
+                people[root[0]][root[1]] += map[i][j];
+                count[root[0]][root[1]]++;
+            }
+        }
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                int[] root = find(i, j);
+                map[i][j] = people[root[0]][root[1]] / count[root[0]][root[1]];
+            }
+        }
+    }
+
+    static void solution() {
+        init();
+        int ans = 0;
+        while (true) {
+            if (!open()) {
+                System.out.println(ans);
+                return;
+            }
+            ans++;
+            migration();
+            init();
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(bf.readLine());
         N = Integer.parseInt(st.nextToken());
         L = Integer.parseInt(st.nextToken());
         R = Integer.parseInt(st.nextToken());
+        parent = new int[N][N][2];
         map = new int[N][N];
         for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
+            st = new StringTokenizer(bf.readLine());
             for (int j = 0; j < N; j++) {
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
-        int day = 0;
-        while (true){
-            if(checkMove()) break;
-            day++;
-        }
-        bw.write(String.valueOf(day));
-        bw.flush();
-        bw.close();
-    }
-    private static boolean checkMove() {
-        int idx = 1;
-        int[][] mark = new int[N][N];
-        Map<Integer, ArrayList<int[]>> markMap = new TreeMap<>();
-        for (int i = 0, top = -1; i < N; i++, top++) {
-            for (int j = 0, left = -1; j < N; j++, left++) {
-                //현재 위치 기준 top의 mark를 확인
-                int topMark = -1;
-                if (top >= 0) {
-                    int diff = Math.abs(map[top][j] - map[i][j]);
-                    if(diff >= L && diff <= R) {
-                        topMark = mark[top][j];
-                    }
-                }
-                int leftMark = -1;
-                if (left >= 0) {
-                    int diff = Math.abs(map[i][left] - map[i][j]);
-                    if(diff >= L && diff <= R) {
-                        leftMark = mark[i][left];
-                    }
-                }
-                //위 왼쪽 모두 없거나 둘 다 조건 만족 X
-                if (leftMark == -1 && topMark == -1) {
-                    //새롭게 인덱싱
-                    mark[i][j] = idx++;
-                    markMap.put(mark[i][j], new ArrayList<>());
-                    markMap.get(mark[i][j]).add(new int[]{i, j});
-                } else if (leftMark != -1 && topMark != -1) {
-                    //둘다 있을 때 (둘다 가능 -> 하나의 지역이 된다.)
-                    //왼쪽 인덱싱으로 추가하고
-                    //위쪽 인덱싱의 List를 추가하고
-                    //맵에서 키 삭제
-                    mark[i][j] = leftMark;
-                    if(leftMark == topMark){
-                        markMap.get(mark[i][j]).add(new int[]{i, j});
-                        continue;
-                    }
-                    for (int k = 0; k < markMap.get(topMark).size(); k++) {
-                        int[] point = markMap.get(topMark).get(k);
-                        markMap.get(mark[i][j]).add(point);
-                        mark[point[0]][point[1]] = mark[i][j];
-                    }
-                    markMap.get(mark[i][j]).add(new int[]{i, j});
-                    markMap.remove(topMark);
-                } else {
-                    //둘 중 하나만 연결되는 경우
-                    mark[i][j] = leftMark != -1 ? leftMark : topMark;
-                    markMap.get(mark[i][j]).add(new int[]{i, j});
-                }
-            }
-        }
-        //각각 원소가 하나의 집합을 이루면 더 이상 합쳐지지 않는 것을 의미함.
-        if (mark[N-1][N-1] == N * N) return true;
-        for (Integer key : markMap.keySet()) {
-            List<int[]> list = markMap.get(key);
-            int sum = 0;
-            for (int i = 0; i < list.size(); i++) {
-                int[] point = list.get(i);
-                sum += map[point[0]][point[1]];
-            }
-            int res = sum / list.size();
-            for (int i = 0; i < list.size(); i++) {
-                int[] point = list.get(i);
-                map[point[0]][point[1]] = res;
-            }
-        }
-        return false;
+        solution();
     }
 }
