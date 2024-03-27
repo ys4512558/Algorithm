@@ -52,19 +52,7 @@ public class Main {
         }
 
         //내가 속한 3 x 3을 확인
-        if (x < 3) {
-            if (y < 3) checkRect(0, 0, isValid);
-            else if (y < 6) checkRect(0, 3, isValid);
-            else checkRect(0, 6, isValid);
-        } else if (x < 6) {
-            if (y < 3) checkRect(3, 0, isValid);
-            else if (y < 6) checkRect(3, 3, isValid);
-            else checkRect(3, 6, isValid);
-        } else {
-            if (y < 3) checkRect(6, 0, isValid);
-            else if (y < 6) checkRect(6, 3, isValid);
-            else checkRect(6, 6, isValid);
-        }
+        checkRect(x, y, isValid);
 
         //되는 경우의 수를 작은 것 부터 넣어보고 다음꺼 해보러 가기.
         for (int i = 1; i <= N; i++) {
@@ -76,9 +64,9 @@ public class Main {
     }
 
     private static void checkRect(int x, int y, boolean[] isValid) {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (sdoku[i + x][j + y] != 0) isValid[sdoku[i + x][j + y]] = true;
+        for (int i = x / 3 * 3; i < x / 3 * 3 + 3; i++) {
+            for (int j = y / 3 * 3; j < y / 3 * 3 + 3; j++) {
+                if (sdoku[i][j] != 0) isValid[sdoku[i][j]] = true;
             }
         }
     }
