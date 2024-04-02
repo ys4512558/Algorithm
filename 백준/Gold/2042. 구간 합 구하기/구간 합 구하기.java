@@ -31,8 +31,8 @@ public class Main {
                 int idx = Integer.parseInt(st.nextToken());
                 long num = Long.parseLong(st.nextToken());
                 long diff = num - arr[idx];
-                arr[idx] = num;
                 update(idx, diff);
+                arr[idx] = num;
             } else { //출력
                 int left = Integer.parseInt(st.nextToken());
                 int right = Integer.parseInt(st.nextToken());
