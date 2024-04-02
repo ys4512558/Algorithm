@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Locale;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -12,9 +11,7 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         int N = Integer.parseInt(st.nextToken());
-        //업데이트
         int M = Integer.parseInt(st.nextToken());
-        //출력
         int K = Integer.parseInt(st.nextToken());
         arr = new long[N + 1];
         bit = new long[N + 1];
@@ -31,13 +28,12 @@ public class Main {
                 int idx = Integer.parseInt(st.nextToken());
                 long num = Long.parseLong(st.nextToken());
                 long diff = num - arr[idx];
-                update(idx, diff);
                 arr[idx] = num;
-            } else { //출력
+                update(idx, diff);
+            } else if(cmd == 2){ //출력
                 int left = Integer.parseInt(st.nextToken());
                 int right = Integer.parseInt(st.nextToken());
-                long res = query(left - 1, right);
-                sb.append(res).append("\n");
+                sb.append(query(right) - query(left - 1)).append("\n");
             }
         }
 
@@ -45,39 +41,21 @@ public class Main {
         bw.flush();
         bw.close();
     }
+    private static long query(int idx) {
+        long res = 0;
 
-    private static void print() {
-        System.out.println("Print Start");
-        for (int i = 1; i < bit.length; i++) {
-            System.out.println(bit[i]);
+        while (idx > 0){
+            res += bit[idx];
+            idx = idx - (idx & -idx);
         }
-        System.out.println("Print End");
-    }
-
-    private static long query(int left, int right) {
-        long start = 0;
-        long end = 0;
-
-        int startIdx = left;
-        int endIdx = right;
-
-        while (startIdx > 0){
-            start += bit[startIdx];
-            startIdx -= (startIdx & -startIdx);
-        }
-
-        while (endIdx > 0) {
-            end += bit[endIdx];
-            endIdx = endIdx - (endIdx & -endIdx);
-        }
-
-         return end - start;
+        return res;
     }
 
     private static void update(int idx, long diff) {
-        while (idx < bit.length) {
-            bit[idx] += diff;
-            idx += (idx & -idx);
+        int next = idx;
+        while (next < bit.length) {
+            bit[next] += diff;
+            next += next & -next;
         }
     }
 }
