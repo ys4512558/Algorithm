@@ -45,23 +45,20 @@ public class Main {
                 edges.add(new Edge(s, e, -c));
             }
         }
-        for (int i = 1; i <= n; i++) {
-            if(isv[i]) continue;
-            if(bellmanford(n, i)) return true;
-        }
+        if(bellmanford(n, 1)) return true;
         return false;
     }
 
     private static boolean bellmanford(int n, int start) {
         Arrays.fill(dist, INF);
-        isv[start] = true;
+//        isv[start] = true;
         dist[start] = 0;
 
         for (int i = 1; i <= n; i++) {
             for (int j = 0; j < edges.size(); j++) {
                 Edge edge = edges.get(j);
-                if(dist[edge.s] == INF) continue;
-                isv[edge.s] = true;
+//                if(dist[edge.s] == INF) continue;
+//                isv[edge.s] = true;
                 if (dist[edge.e] > dist[edge.s] + edge.cost) {
                     dist[edge.e] = dist[edge.s] + edge.cost;
                     isv[edge.e] = true;
