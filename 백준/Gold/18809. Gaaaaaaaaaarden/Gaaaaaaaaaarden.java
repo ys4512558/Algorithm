@@ -94,53 +94,38 @@ public class Main {
         while (!reds.isEmpty() || !greens.isEmpty()) {
             int size1 = greens.size();
             while (size1-- > 0) {
-                Pair p = greens.poll();
-
-                if(isv[1][p.x][p.y] == -1) continue;
-                if(isv[1][p.x][p.y] == p.t) {
-                    cnt++;
-                    isv[0][p.x][p.y] = -1;
-                    isv[1][p.x][p.y] = -1;
-                    continue;
-                }
-
-                for (int i = 0; i < 4; i++) {
-                    int nx = p.x + dx[i];
-                    int ny = p.y + dy[i];
-
-                    if (isValid(nx, ny) || isv[0][nx][ny] != 0) continue;
-                    if(isv[1][nx][ny] == 0 || isv[1][nx][ny] == p.t + 1){
-                        greens.offer(new Pair(nx, ny, p.t + 1));
-                        isv[0][nx][ny] = p.t + 1;
-                    }
-                }
+                cnt = go(greens, isv, cnt, 0);
             }
-
             int size2 = reds.size();
             while (size2-- > 0) {
-                Pair p = reds.poll();
-
-                if(isv[0][p.x][p.y] == -1) continue;
-                if(isv[0][p.x][p.y] == p.t) {
-                    cnt++;
-                    isv[0][p.x][p.y] = -1;
-                    isv[1][p.x][p.y] = -1;
-                    continue;
-                }
-
-                for (int i = 0; i < 4; i++) {
-                    int nx = p.x + dx[i];
-                    int ny = p.y + dy[i];
-
-                    if (isValid(nx, ny) || isv[1][nx][ny] != 0) continue;
-                    if(isv[0][nx][ny] == 0 || isv[0][nx][ny] == p.t + 1){
-                        reds.offer(new Pair(nx, ny, p.t + 1));
-                        isv[1][nx][ny] = p.t + 1;
-                    }
-                }
+                cnt = go(reds, isv, cnt, 1);
             }
         }
         max = Math.max(max, cnt);
+    }
+
+    public static int go(Queue<Pair> queue, int[][][] isv, int cnt, int flag){
+        Pair p = queue.poll();
+
+        if(isv[flag^1][p.x][p.y] == -1) return cnt;
+        if(isv[flag^1][p.x][p.y] == p.t) {
+            cnt++;
+            isv[0][p.x][p.y] = -1;
+            isv[1][p.x][p.y] = -1;
+            return cnt;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            int nx = p.x + dx[i];
+            int ny = p.y + dy[i];
+
+            if (isValid(nx, ny) || isv[flag][nx][ny] != 0) continue;
+            if(isv[flag^1][nx][ny] == 0 || isv[flag^1][nx][ny] == p.t + 1){
+                queue.offer(new Pair(nx, ny, p.t + 1));
+                isv[flag][nx][ny] = p.t + 1;
+            }
+        }
+        return cnt;
     }
 
     private static boolean isValid(int nx, int ny) {
