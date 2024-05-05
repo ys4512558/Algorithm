@@ -125,32 +125,6 @@ public class Main {
         }
         return copy;
     }
-
-    public static void print(int[][][] map) {
-        System.out.println("================================");
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                    System.out.print(map[i][j][0] + "("+ map[i][j][1] + ") ");
-            }
-            System.out.println();
-        }
-        System.out.println("================================");
-    }
-    public static void print2(int[][][] map, int[] shark) {
-        System.out.println("================================");
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                if(i == shark[0] && j == shark[1]) {
-                    System.out.print("상 ");
-                    continue;
-                }
-                System.out.print(map[i][j][0] + " ");
-            }
-            System.out.println();
-        }
-
-        System.out.println("================================");
-    }
 }
 
 class Fish {
