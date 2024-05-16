@@ -22,9 +22,9 @@ public class Main {
         holes = new HashMap<>();
         //사용중인 상태에서 뺄때는 더 안쓰이는 위주로 빼기
         usedAppliances = new PriorityQueue<>();
-        appliances = new Appliance[101];
+        appliances = new Appliance[K + 1];
 
-        for (int i = 1; i <= 100; i++) {
+        for (int i = 1; i <= K; i++) {
             appliances[i] = new Appliance(i, 0, new PriorityQueue<>());
             holes.put(i, false);
         }
@@ -95,14 +95,5 @@ class Appliance implements Comparable<Appliance> {
         } else {
             return Integer.compare(o.times.peek(), this.times.peek());
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Appliance{" +
-                "num=" + num +
-                ", count=" + count +
-                ", times=" + times +
-                '}';
     }
 }
