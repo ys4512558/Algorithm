@@ -72,11 +72,11 @@ public class Main {
         int dest = i - 1;
 
         int j = comb.length - 1;
-        while (j > i && comb[dest] >= comb[j]) j--;
+        while (j >= i && comb[dest] >= comb[j]) j--;
         swap(dest, j, comb);
 
         int k = comb.length - 1;
-        while (i > k) swap(i++, k--, comb);
+        while (i < k) swap(i++, k--, comb);
         return true;
     }
 
