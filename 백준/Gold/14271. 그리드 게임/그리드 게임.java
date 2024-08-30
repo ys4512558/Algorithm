@@ -19,16 +19,16 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
 
-        isv = new boolean[4000][4000];
-        map = new char[4000][4000];
+        isv = new boolean[3053][3053];
+        map = new char[3053][3053];
 
         Queue<Pair> queue = new ArrayDeque<>();
         for (int i = 0; i < N; i++) {
             String str = br.readLine();
             for (int j = 0; j < M; j++) {
                 char c = str.charAt(j);
-                int x = i + 2000 - (N / 2);
-                int y = j + 2000 - (M / 2);
+                int x = i + 1500;
+                int y = j + 1500;
                 map[x][y] = c;
                 if(c == '.') continue;
                 queue.offer(new Pair(x, y));
