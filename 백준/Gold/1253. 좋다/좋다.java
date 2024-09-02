@@ -31,7 +31,7 @@ public class Main {
                 int target = cur - arr[j];
                 int idx = binarySearch(target);
                 if (idx == -1) continue;
-                if (arr[idx] == arr[i] && arr[idx] == arr[j] && counts.get(arr[idx]) < 2) continue;
+                if (arr[idx] == arr[i] && arr[idx] == arr[j] && counts.get(arr[idx]) <= 2) continue;
                 if ((arr[idx] == arr[i] || arr[idx] == arr[j]) && counts.get(arr[idx]) <= 2) continue;
                 cnt++;
                 break;
