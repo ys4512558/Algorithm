@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -6,15 +7,17 @@ public class Main {
     static int[] map;
     static int N;
     static int ans = 0;
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        N = sc.nextInt();
+        N = Integer.parseInt(br.readLine());
         map = new int[N];
-        Arrays.fill(map, -1);
 
         dfs(0, 0);
-        System.out.println(ans);
+        bw.write(String.valueOf(ans));
+        bw.flush();
+        bw.close();
     }
 
     private static void dfs(int row, int cnt) {
@@ -23,8 +26,8 @@ public class Main {
             return;
         }
         for (int i = 0; i < N; i++) {
-            map[row] = i;
             //놓을 수 있는 자리면 놓고 다음 행에 퀸을 놓으러 감
+            map[row] = i;
             if (available(row)) {
                 dfs(row + 1, cnt + 1);
             }
@@ -32,12 +35,10 @@ public class Main {
     }
     private static boolean available(int row) {
         //행은 확인할 필요 X 어차피 다음 행에 놓도록 로직 설계 했기 때문
-        //같은 열인지 확인
         for (int i = 0; i < row; i++) {
+            //같은 열인지 확인
             if(map[i] == map[row]) return false;
-        }
-        //대각선 확인
-        for (int i = 0; i < row; i++) {
+            //대각선 확인
             if(Math.abs(i - row) == Math.abs(map[i] - map[row])) return false;
         }
         return true;
