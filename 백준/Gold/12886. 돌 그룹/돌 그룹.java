@@ -31,7 +31,7 @@ public class Main {
                 break;
             }
             int a = tuple.a + tuple.a;
-            if (tuple.b - tuple.a >= 0) {
+            if (tuple.b - tuple.a > 0) {
                 int b = tuple.b - tuple.a;
                 int[] temp = new int[]{a, b, tuple.c};
                 Arrays.sort(temp);
@@ -40,7 +40,7 @@ public class Main {
                     isv[temp[0]][temp[1]][temp[2]] = true;
                 }
             }
-            if (tuple.c - tuple.a >= 0) {
+            if (tuple.c - tuple.a > 0) {
                 int c = tuple.c - tuple.a;
                 int[] temp = new int[]{a, tuple.b, c};
                 Arrays.sort(temp);
