@@ -31,7 +31,7 @@ public class Main {
             dp[n] = count;
             if (n == 1) {
                 result = node;
-                continue;
+                break;
             }
 
             if (n % 3 == 0) {
