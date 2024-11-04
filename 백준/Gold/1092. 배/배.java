@@ -4,20 +4,20 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
+    static int[] arr;
     static int N, M;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
 
-        List<Integer> list = new ArrayList<>();
+        arr = new int[N];
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            list.add(Integer.parseInt(st.nextToken()));
+            arr[i] = Integer.parseInt(st.nextToken());
         }
-        Collections.sort(list, Collections.reverseOrder());
+        Arrays.sort(arr);
 
         M = Integer.parseInt(br.readLine());
-
         st = new StringTokenizer(br.readLine());
         List<Integer> weights = new ArrayList<>();
         int max = 0;
@@ -27,28 +27,44 @@ public class Main {
             weights.add(weight);
         }
 
-        Collections.sort(weights, Collections.reverseOrder());
+        Collections.sort(weights);
 
-        System.out.println(solve(list, weights));
+        int res = 0;
+        if (max > arr[N - 1]) {
+            res = -1;
+        } else {
+            res = simulation(weights);
+        }
+
+        System.out.println(res);
     }
 
-    private static int solve(List<Integer> list, List<Integer> weights) {
-        if (weights.get(0) > list.get(0)) return -1;
-
+    private static int simulation(List<Integer> weights) {
         int cnt = 0;
         while (!weights.isEmpty()) {
             cnt++;
-            int idx = 0;
-            for (int i = 0; i < N; ) {
-                if(idx >= weights.size()) break;
-                if (list.get(i) >= weights.get(idx)) {
-                    weights.remove(idx);
-                    i++;
-                } else {
-                    idx++;
-                }
+            for (int i = N - 1; i >= 0; i--) {
+                int right = weights.size() - 1;
+                int idx = upperBound(weights, 0, right, arr[i]);
+                if(idx == -1) break;
+                weights.remove(Integer.valueOf(weights.get(idx)));
+                if(weights.isEmpty()) return cnt;
             }
         }
+
         return cnt;
+    }
+
+    private static int upperBound(List<Integer> list, int l, int r, int target) {
+        while (l < r) {
+            int mid = (l + r) / 2;
+
+            if (list.get(mid) <= target) {
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        return list.get(l) <= target ? l : l - 1;
     }
 }
