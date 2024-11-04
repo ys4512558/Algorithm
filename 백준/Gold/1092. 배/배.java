@@ -56,15 +56,15 @@ public class Main {
     }
 
     private static int upperBound(List<Integer> list, int l, int r, int target) {
-        while (l < r) {
+        while (l <= r) {
             int mid = (l + r) / 2;
 
             if (list.get(mid) <= target) {
                 l = mid + 1;
             } else {
-                r = mid;
+                r = mid - 1;
             }
         }
-        return list.get(l) <= target ? l : l - 1;
+        return r;
     }
 }
