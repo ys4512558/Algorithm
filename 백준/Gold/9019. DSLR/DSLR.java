@@ -2,6 +2,10 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+    static final  int D = 0, S = 1, L = 2, R = 3;
+    static final char[] commands = {'D', 'S', 'L', 'R'};
+    static Set<Integer> set;
+    static Queue<Info> queue;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -13,57 +17,61 @@ public class Main {
             int start = Integer.parseInt(st.nextToken());
             int end = Integer.parseInt(st.nextToken());
 
-            Set<Integer> set = new HashSet<>();
+            set = new HashSet<>();
             set.add(start);
-            Queue<Info> queue = new ArrayDeque<>();
-            queue.offer(new Info(start, new StringBuilder()));
+            queue = new ArrayDeque<>();
+            queue.offer(new Info(start, -1, null));
 
+            Info endInfo = null;
+            StringBuilder sb = new StringBuilder();
             while (!queue.isEmpty()) {
                 Info info = queue.poll();
 
                 if (info.num == end) {
-                    result.append(info.sb.toString());
-                    result.append("\n");
+                    endInfo = info;
                     break;
                 }
 
                 //D
                 int num = (info.num * 2) % 10000;
-                checkAndOffer(set, num, info, queue, "D");
+                checkAndOffer(num, D, info);
 
                 //S
                 num = (info.num == 0) ? 9999 : info.num - 1;
-                checkAndOffer(set, num, info, queue, "S");
+                checkAndOffer(num, S, info);
 
                 //L
                 num = (info.num % 1000) * 10 + info.num / 1000;
-                checkAndOffer(set, num, info, queue, "L");
+                checkAndOffer(num, L, info);
 
                 //R
                 num = info.num / 10 + ((info.num % 10) * 1000);
-                checkAndOffer(set, num, info, queue, "R");
+                checkAndOffer(num, R,info);
             }
+            for (Info info = endInfo; info.prev != null; info = info.prev) {
+                sb.append(commands[info.command]);
+            }
+            result.append(sb.reverse()).append("\n");
         }
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         bw.write(result.toString());
         bw.flush();
     }
 
-    private static void checkAndOffer(Set<Integer> set, int num, Info info, Queue<Info> queue, String command) {
+    private static void checkAndOffer(int num, int command, Info info) {
         if (set.add(num)) {
-            StringBuilder sb = new StringBuilder(info.sb);
-            sb.append(command);
-            queue.offer(new Info(num, sb));
+            queue.offer(new Info(num, command, info));
         }
     }
 }
 
 class Info {
-    int num;
-    StringBuilder sb = new StringBuilder();
+    int num, command;
+    Info prev;
 
-    public Info(int num, StringBuilder sb) {
+    public Info(int num, int command, Info prev) {
         this.num = num;
-        this.sb = sb;
+        this.command = command;
+        this.prev = prev;
     }
 }
