@@ -37,7 +37,7 @@ public class Main {
             int y = Integer.parseInt(st.nextToken());
             tops[i] = new Top(x, y, D);
         }
-        
+
         bfs(new Top(X, Y, 0));
         double res = 0;
         for (int i : map.keySet()) {
@@ -57,16 +57,16 @@ public class Main {
             while (size-- > 0) {
                 Top top = queue.poll();
 
-                //이전탑을 기준으로 정렬
-                Arrays.sort(tops, (o1, o2) -> {
-                    double dist1 = getDist(o1.x, o1.y, top.x, top.y);
-                    double dist2 = getDist(o2.x, o2.y, top.x, top.y);
-                    return Double.compare(dist1, dist2);
-                });
+//                //이전탑을 기준으로 정렬
+//                Arrays.sort(tops, (o1, o2) -> {
+//                    double dist1 = getDist(o1.x, o1.y, top.x, top.y);
+//                    double dist2 = getDist(o2.x, o2.y, top.x, top.y);
+//                    return Double.compare(dist1, dist2);
+//                });
 
                 for (int i = 0; i < N; i++) {
                     //정렬했으므로 넘어가면 할필요없음
-                    if (getDist(tops[i].x, tops[i].y, top.x, top.y) > R) break;
+                    if (getDist(tops[i].x, tops[i].y, top.x, top.y) > R) continue;
                     if (set.add(tops[i])){
                         map.put(breadth, map.getOrDefault(breadth, 0) + 1);
                         queue.offer(tops[i]);
