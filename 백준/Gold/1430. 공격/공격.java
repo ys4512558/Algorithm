@@ -4,8 +4,6 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-
-    static Set<Top> set;
     static int[] counts;
     static Top[] tops;
     static int N, R, D, X, Y;
@@ -24,7 +22,6 @@ public class Main {
         X = Integer.parseInt(st.nextToken());
         Y = Integer.parseInt(st.nextToken());
 
-        set = new HashSet<>();
         //최대 N임
         counts = new int[N]; //어떤 너비에 몇개의 탑이 속하는지 (적 - R(a) - R(b)) 이런식으로 계속 뻗어나가도록 할때 2차원 리스트에 각 범위별로관리
 
@@ -45,7 +42,7 @@ public class Main {
             if(counts[i] == 0) break;
             res += (D * counts[i]) / Math.pow(2, i);
         }
-        
+
         System.out.println(res);
     }
 
@@ -53,6 +50,7 @@ public class Main {
         Queue<Top> queue = new ArrayDeque<>();
         queue.offer(start);
 
+        boolean[] isv = new boolean[N];
         int breadth = 0;
         while (!queue.isEmpty()) {
             int size = queue.size();
@@ -60,12 +58,10 @@ public class Main {
                 Top top = queue.poll();
 
                 for (int i = 0; i < N; i++) {
-                    //정렬했으므로 넘어가면 할필요없음
-                    if (getDist(tops[i].x, tops[i].y, top.x, top.y) > R) continue;
-                    if (set.add(tops[i])){
-                        counts[breadth]++;
-                        queue.offer(tops[i]);
-                    }
+                    if (getDist(tops[i].x, tops[i].y, top.x, top.y) > R || isv[i]) continue;
+                    counts[breadth]++;
+                    isv[i] = true;
+                    queue.offer(tops[i]);
                 }
             }
             breadth++;
@@ -85,18 +81,5 @@ class Top {
         this.x = x;
         this.y = y;
         this.energy = energy;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Top top = (Top) o;
-        return x == top.x && y == top.y;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(x, y);
     }
 }
