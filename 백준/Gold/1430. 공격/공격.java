@@ -6,7 +6,7 @@ import java.util.*;
 public class Main {
 
     static Set<Top> set;
-    static Map<Integer, Integer> map;
+    static int[] counts;
     static Top[] tops;
     static int N, R, D, X, Y;
 
@@ -25,7 +25,8 @@ public class Main {
         Y = Integer.parseInt(st.nextToken());
 
         set = new HashSet<>();
-        map = new HashMap<>(); //어떤 depth에 속하는지 (적 - R(a) - R(b)) 이런식으로 계속 뻗어나가도록 할때 2차원 리스트에 각 범위별로관리
+        //최대 N임
+        counts = new int[N]; //어떤 너비에 몇개의 탑이 속하는지 (적 - R(a) - R(b)) 이런식으로 계속 뻗어나가도록 할때 2차원 리스트에 각 범위별로관리
 
         //최소 이동 -> 최대 효율
         //적의 X, Y에서 시작해서 R 거리인 애들 A
@@ -40,10 +41,11 @@ public class Main {
 
         bfs(new Top(X, Y, 0));
         double res = 0;
-        for (int i : map.keySet()) {
-            int cnt = map.get(i);
-            res += (D * cnt) / Math.pow(2, i);
+        for (int i = 0; i < N; i++) {
+            if(counts[i] == 0) break;
+            res += (D * counts[i]) / Math.pow(2, i);
         }
+        
         System.out.println(res);
     }
 
@@ -57,18 +59,11 @@ public class Main {
             while (size-- > 0) {
                 Top top = queue.poll();
 
-//                //이전탑을 기준으로 정렬
-//                Arrays.sort(tops, (o1, o2) -> {
-//                    double dist1 = getDist(o1.x, o1.y, top.x, top.y);
-//                    double dist2 = getDist(o2.x, o2.y, top.x, top.y);
-//                    return Double.compare(dist1, dist2);
-//                });
-
                 for (int i = 0; i < N; i++) {
                     //정렬했으므로 넘어가면 할필요없음
                     if (getDist(tops[i].x, tops[i].y, top.x, top.y) > R) continue;
                     if (set.add(tops[i])){
-                        map.put(breadth, map.getOrDefault(breadth, 0) + 1);
+                        counts[breadth]++;
                         queue.offer(tops[i]);
                     }
                 }
