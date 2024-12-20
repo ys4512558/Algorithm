@@ -77,15 +77,15 @@ class Solution {
                     //출력을 위한 결과 배열에 selectedDice에 있는 인덱스 (0부터 시작하므로 + 1) 세팅
                     result[i] = selectedDice[i] + 1;
                 }
-                System.out.println();
+//                 System.out.println();
                 
-                System.out.println("=================================");
-                for(int i = 0; i < half; i++) {
-                    System.out.print(result[i] + " ");
-                }
-                System.out.println();
+//                 System.out.println("=================================");
+//                 for(int i = 0; i < half; i++) {
+//                     System.out.print(result[i] + " ");
+//                 }
+//                 System.out.println();
                 
-                System.out.println("=================================");
+//                 System.out.println("=================================");
                 
 
             }
@@ -109,8 +109,8 @@ class Solution {
         if(diceDepth == half) {
             //선택되지 않은 주사위 조합 점수 정렬
             // win += upperBound(score);
-            win += counting(score);
-            
+            // win += counting(score);
+            win += lowerBound(score);
             // System.out.println("score :" + score);
             // for(int i = 0; i < notSelectedScore.length; i++) {
             //     System.out.print(notSelectedScore[i] + " ");
@@ -156,19 +156,20 @@ class Solution {
         for(int i = 0; i < notSelectedScore.length; i++) {
             if(notSelectedScore[i] < score) cnt++;
         }
+        // System.out.println("cnt : " + cnt);
         return cnt;
     }
     
     //score보다 같거나 큰 첫번째 수 = score의 승리 수 
     //(score보다 같거나 큰 첫번째 인덱스 - 1은 score보다 무조건 작으므로 이기는 경우임)
-    public int upperBound(int score) {
+    public int lowerBound(int score) {
         int l = 0;
         int r = notSelectedScore.length - 1;
         
         while(l < r) {
             int mid = (l + r) / 2;
             
-            if(notSelectedScore[mid] <= score) {
+            if(notSelectedScore[mid] < score) {
                 l = mid + 1;
             } else {
                 r = mid;
@@ -179,11 +180,21 @@ class Solution {
         //1 2 2 3 4 일때 1 2 [2] 3 4 이 선택된 경우 2번 승리로 카운팅 하면 안됨.
         //따라서 가장 왼쪽의 수를 찾아야함
         int index = l;
-        for(int i = l; i >= 0; i--) {
-            if(res != notSelectedScore[i]) break;
-            index = i;
+        //선택 주사위 합이 lowerBound값보다 작거나 같으면 앞으로 탐색
+        if(score <= notSelectedScore[l]) {
+            for(int i = l; i >= 0; i--) {
+                if(res != notSelectedScore[i]) break;
+                index = i;
+            }
+        } else { //크면 뒤로 탐색
+            for(int i = l; i < notSelectedScore.length; i++) {
+                if(res != notSelectedScore[i]) break;
+                index = i;
+            }
+            index++;
         }
-        System.out.println("index : " + index);
+        
+        // System.out.println("index : " + index);
         return index;
     }
 }
