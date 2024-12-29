@@ -18,11 +18,11 @@ public class Main {
             sum += arr[i];
         }
 
-        int result = 0;
+        long result = 0;
         Arrays.sort(arr);
 
         for (int i = 0; i < N - 1; i++) {
-            result += arr[i] * (sum - arr[i]);
+            result += (long) arr[i] * (sum - arr[i]);
             sum -= arr[i];
         }
         System.out.println(result);
