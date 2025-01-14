@@ -5,15 +5,8 @@ import java.io.InputStreamReader;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder gear1 = new StringBuilder(br.readLine());
-        StringBuilder gear2 = new StringBuilder(br.readLine());
-
-        //길이가 긴걸 gear1에 저장
-        if (gear1.length() < gear2.length()) {
-            StringBuilder temp = new StringBuilder(gear1.toString());
-            gear1 = gear2;
-            gear2 = temp;
-        }
+        String gear1 = br.readLine();
+        String gear2 = br.readLine();
 
         int min = gear1.length() + gear2.length();
         min = Math.min(min, find(gear1, gear2));
@@ -21,7 +14,7 @@ public class Main {
         System.out.println(min);
     }
 
-    private static int find(StringBuilder gear1, StringBuilder gear2) {
+    private static int find(String gear1, String gear2) {
         int min = gear1.length() + gear2.length();
         for (int start = 0; start < gear1.length(); start++) { //기어가 맞물리는 시작점 인덱스
             boolean flag = true;
