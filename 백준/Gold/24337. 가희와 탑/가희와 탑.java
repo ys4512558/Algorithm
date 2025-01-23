@@ -48,6 +48,12 @@ public class Main {
             top[maxIdx] = max;
 
             if (a == 0) {
+                //밑에 두개 순서 바뀌면 틀림 반례 10 1 10
+                //maxIdx = 0일때 top[0] = max로 하면 top[0] = 10이 되고,
+                //top[maxIdx = 0] = 1로 덮으면 안됨
+                //먼저 top[maxIdx] = 1로 만들고 top[0] = max로 덮어줘야함.
+                //위처럼 잘못하면 1 9 8 7 6 5 4 3 2 1 이 나옴
+                //제대로 된 정답은 10 9 8 7 6 5 4 3 2 1
                 top[maxIdx] = 1;
                 top[0] = max;
             }
