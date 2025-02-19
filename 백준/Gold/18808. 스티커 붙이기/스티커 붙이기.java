@@ -40,7 +40,7 @@ public class Main {
     
     //map에 sticker + offset을 통해 겹쳐놓고 확인하기? 
     public static boolean solution(boolean[][] sticker) {
-        for(int i = 0; i < DIR; i++) {
+        for(int i = 1; i <= DIR; i++) {
             int R = sticker.length;
             int C = sticker[0].length;
             for(int r = 0; r < N; r++) {
@@ -53,6 +53,7 @@ public class Main {
                     }
                 }
             }
+            if(i == DIR) break;
             sticker = rotate(R, C, sticker);
         }
         return false;
