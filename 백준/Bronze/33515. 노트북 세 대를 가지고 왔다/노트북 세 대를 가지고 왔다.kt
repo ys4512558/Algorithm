@@ -1,0 +1,10 @@
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.util.StringTokenizer
+
+fun main() = with(BufferedReader(InputStreamReader(System.`in`))) {
+    val st = StringTokenizer(readLine())
+    val N = st.nextToken().toInt()
+    val M = st.nextToken().toInt()
+    print(Math.min(N, M))
+}
